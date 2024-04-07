@@ -48,13 +48,13 @@ namespace ISM6225_Spring_2024_Assignment_2
 
             //Question 6:
             Console.WriteLine("Question 6:");
-            int[] nums5 = { 3,6,9,1 };
+            int[] nums5 = { 3, 6, 9, 1 };
             int maxGap = MaximumGap(nums5);
             Console.WriteLine(maxGap);
 
             //Question 7:
             Console.WriteLine("Question 7:");
-            int[] nums6 = { 2,1,2 };
+            int[] nums6 = { 2, 1, 2 };
             int largestPerimeterResult = LargestPerimeter(nums6);
             Console.WriteLine(largestPerimeterResult);
 
@@ -83,7 +83,7 @@ namespace ISM6225_Spring_2024_Assignment_2
         Example 2:
 
         Input: nums = [0,0,1,1,1,2,2,3,3,4]
-        Output: 5, nums = [0,1,2,3,4,_,_,_,_,_]
+        Output: 5, nums = [0,1,2,3,4,,,,,_]
         Explanation: Your function should return k = 5, with the first five elements of nums being 0, 1, 2, 3, and 4 respectively.
         It does not matter what you leave beyond the returned k (hence they are underscores).
  
@@ -95,13 +95,29 @@ namespace ISM6225_Spring_2024_Assignment_2
         nums is sorted in non-decreasing order.
         */
 
+
+
         public static int RemoveDuplicates(int[] nums)
         {
-            try
+           try{
+                if (nums.Length == 0)
             {
-                // Write your code here and you can modify the return value according to the requirements
                 return 0;
             }
+            int j = 1; // Initialize 
+            for (int i = 1; i < nums.Length; i++) // Iteration of  array starting from the first element
+            {
+                if (nums[i] != nums[i - 1])//if  current element is not equal to the previous element,
+                                           //then its a unique elements and  then it will be moved front
+                {
+                    nums[j] = nums[i];
+                    j++;
+                }
+            }
+
+            //output:the size of the unique elements array
+            return j;
+        }
             catch (Exception)
             {
                 throw;
@@ -130,18 +146,40 @@ namespace ISM6225_Spring_2024_Assignment_2
         -231 <= nums[i] <= 231 - 1
         */
 
+
+
         public static IList<int> MoveZeroes(int[] nums)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<int>();
+                int index = 0;
+                // Iterate through the array
+                for (int i = 0; i < nums.Length; i++)
+                {
+                    // If the current element is non-zero
+                    if (nums[i] != 0)
+                    {
+                        // Swap current non-zero element with the element at 'index'
+                        int temp = nums[i];
+                        nums[i] = nums[index];
+                        nums[index] = temp;
+
+                        // Move the 'index' forward
+                        index++;
+                    }
+                }
+
+                // Since the question expects a return type but the operation is in-place,
+                // the following return statement is just to comply with the expected method signature.
+                // In practice, you would modify the method signature to return void.
+                return new List<int>(nums); // This is not required if the method signature is void
             }
             catch (Exception)
             {
                 throw;
             }
         }
+
 
         /*
 
@@ -181,12 +219,48 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
+
         public static IList<IList<int>> ThreeSum(int[] nums)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return new List<IList<int>>();
+                Array.Sort(nums);
+                IList<IList<int>> result = new List<IList<int>>();
+
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    
+                    if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+                    int left = i + 1, right = nums.Length - 1;
+                    while (left < right)
+                    {
+                        int sum = nums[i] + nums[left] + nums[right];
+
+                        if (sum == 0)
+                        {
+                            result.Add(new List<int> { nums[i], nums[left], nums[right] });
+
+                            while (left < right && nums[left] == nums[left + 1]) left++;
+                           
+
+                            while (left < right && nums[right] == nums[right - 1]) right--;
+
+                            left++;
+                            right--;
+                        }
+                        else if (sum < 0)
+                        {
+                            left++;
+                        }
+                        else
+                        {
+                            right--;
+                        }
+                    }
+                }
+
+                return result;
             }
             catch (Exception)
             {
@@ -220,8 +294,35 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                // Initialize a variable to keep track of the longest streak of 1s found till now.
+                int max= 0;
+                // Initialize a variable to keep track of the current streak of 1s .
+                int cur = 0;
+
+                
+                foreach (int num in nums)
+                {
+                    // Check if the current number is 1.
+                    if (num == 1)
+                    {
+                        // If it is i, increment the count of the curr.
+                        cur++;
+                        //if the current streak is greater than the max found so far.
+                        if (max < cur)
+                        {
+                            // If so, update the longest streak with the length of the curr.
+                            max = cur;
+                        }
+                    }
+                    else
+                    {
+                        // If the number is not 1, make the curr count to 0.
+                        cur= 0;
+                    }
+                }
+
+                // Return the longest streak of consecutive 1s found.
+                return max;
             }
             catch (Exception)
             {
@@ -232,12 +333,12 @@ namespace ISM6225_Spring_2024_Assignment_2
         /*
 
         Question 5:
-        You are tasked with writing a program that converts a binary number to its equivalent decimal representation without using bitwise operators or the `Math.Pow` function. You will implement a function called `BinaryToDecimal` which takes an integer representing a binary number as input and returns its decimal equivalent. 
+        You are tasked with writing a program that converts a binary number to its equivalent decimal representation without using bitwise operators or the Math.Pow function. You will implement a function called BinaryToDecimal which takes an integer representing a binary number as input and returns its decimal equivalent. 
 
         Requirements:
         1. Your program should prompt the user to input a binary number as an integer. 
-        2. Implement the `BinaryToDecimal` function, which takes the binary number as input and returns its decimal equivalent. 
-        3. Avoid using bitwise operators (`<<`, `>>`, `&`, `|`, `^`) and the `Math.Pow` function for any calculations. 
+        2. Implement the BinaryToDecimal function, which takes the binary number as input and returns its decimal equivalent. 
+        3. Avoid using bitwise operators (<<, >>, &, |, ^) and the Math.Pow function for any calculations. 
         4. Use only basic arithmetic operations such as addition, subtraction, multiplication, and division. 
         5. Ensure the program displays the input binary number and its corresponding decimal value.
 
@@ -256,8 +357,27 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                // Initialize a  decimal value.
+                int dec= 0;
+                // Initialize a base value which is in conversion of  binary to decimal.
+                int basev = 1;
+
+                int temp = binary;
+                while (temp > 0)
+                {
+                    // Extract the last digit of the binary number.
+                    int last = temp % 10;
+                    // Convert the last binary digit to decimal and add it to the total decimalValue.
+                    dec += last * basev;
+
+                    
+                    temp = temp / 10;
+                    // Increase the base value (powers of 2).
+                    basev = basev* 2;
+                }
+
+                // Return the output,decimal value.
+                return dec;
             }
             catch (Exception)
             {
@@ -290,15 +410,34 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
+
         public static int MaximumGap(int[] nums)
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return 0;
+                if (nums.Length < 2)
+                {
+                    return 0;
+                }
+
+                // Step 1: Sort the array
+                Array.Sort(nums);
+
+                // Step 2 & 3: Iterate through the sorted array and find the maximum difference
+                int maxDiff = 0;
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    maxDiff = Math.Max(maxDiff, nums[i] - nums[i - 1]);
+                }
+
+                return maxDiff;
             }
+                
+              
+            
             catch (Exception)
             {
+
                 throw;
             }
         }
@@ -330,11 +469,29 @@ namespace ISM6225_Spring_2024_Assignment_2
 
         */
 
+
+
         public static int LargestPerimeter(int[] nums)
         {
             try
             {
                 // Write your code here and you can modify the return value according to the requirements
+                // Sort the array in non-ascending order
+                Array.Sort(nums);
+                Array.Reverse(nums);
+
+                // Iterate through the array to find the largest perimeter
+                for (int i = 0; i < nums.Length - 2; i++)
+                {
+                    // Checking if the  numbers can form a triangle
+                    if (nums[i] < nums[i + 1] + nums[i + 2])
+                    {
+                        // If they can form a triangle, return their sum as the largest perimeter
+                        return nums[i] + nums[i + 1] + nums[i + 2];
+                    }
+                }
+
+                // If no , return 0
                 return 0;
             }
             catch (Exception)
@@ -342,6 +499,7 @@ namespace ISM6225_Spring_2024_Assignment_2
                 throw;
             }
         }
+
 
         /*
 
@@ -388,8 +546,19 @@ namespace ISM6225_Spring_2024_Assignment_2
         {
             try
             {
-                // Write your code here and you can modify the return value according to the requirements
-                return "";
+                // loop as long as 's' contains 'part'
+                while (s.Contains(part))
+                {
+                    // Finding the index of the leftmost occurrence of 'part' in 's'
+                    int index = s.IndexOf(part);
+                    // If 'part' is found, remove it from 's'
+                    if (index != -1)
+                    {
+                        s = s.Remove(index, part.Length);
+                    }
+                }
+                //  after removing all occurrences of 'part' ,return the output
+                return s;
             }
             catch (Exception)
             {
